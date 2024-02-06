@@ -1,62 +1,60 @@
-const path = require('path');
-const { ProgressPlugin } = require('webpack')
+const path = require("path");
+const { ProgressPlugin } = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const TerserPlugin = require('terser-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
-const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
-const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin')
+const FriendlyErrorsWebpackPlugin = require("@soda/friendly-errors-webpack-plugin");
 
+const ConsoleLogOnBuildWebpackPlugin = require("./plugin/CompileInfoPlugin");
 
+const ReplaceTextPlugin = require("./plugin/ReplaceTextPlugin");
 
+const FileListPlugin = require("./plugin/FileListPlugin");
+
+const CopyWebpackPlugin = require("./plugin/CopyWebpackPlugin");
+
+const ZipWebpackPlugin = require("./plugin/ZipWebpackPlugin");
 const smp = new SpeedMeasurePlugin();
 
 const config = {
-  mode: 'production',
-  devtool: 'source-map',
+  mode: "production",
+  devtool: "source-map",
   cache: {
-    type: 'filesystem',
-    name: 'production-cache',
-    version: 'production',
+    type: "filesystem",
+    name: "production-cache",
+    version: "production",
   },
   profile: false,
   output: {
-    path: path.join(__dirname, '../dist'),
-    filename: 'js/[name].[chunkhash].js',
-    chunkFilename: 'chunk/[name].[chunkhash].js',
-    publicPath: './'
+    path: path.join(__dirname, "../dist"),
+    filename: "js/[name].[chunkhash].js",
+    chunkFilename: "chunk/[name].[chunkhash].js",
+    publicPath: "./",
   },
   resolve: {
     symlinks: true,
     alias: {
-      '@': path.resolve(__dirname, '../src'),
-      '@assets': path.resolve(__dirname, '../src/assets'),
-      '@components': path.resolve(__dirname, '../src/components'),
-      '@pages': path.resolve(__dirname, '../src/pages'),
-      '@hooks': path.resolve(__dirname, '../src/hooks'),
-      '@utils': path.resolve(__dirname, '../src/utils'),
-      '@store': path.resolve(__dirname, '../src/store'),
-      '@api': path.resolve(__dirname, '../src/api'),
-      '@types': path.resolve(__dirname, '../src/types'),
+      "@": path.resolve(__dirname, "../src"),
+      "@assets": path.resolve(__dirname, "../src/assets"),
+      "@components": path.resolve(__dirname, "../src/components"),
+      "@pages": path.resolve(__dirname, "../src/pages"),
+      "@hooks": path.resolve(__dirname, "../src/hooks"),
+      "@utils": path.resolve(__dirname, "../src/utils"),
+      "@store": path.resolve(__dirname, "../src/store"),
+      "@api": path.resolve(__dirname, "../src/api"),
+      "@types": path.resolve(__dirname, "../src/types"),
     },
-    extensions: [
-      '.tsx',
-      '.ts',
-      '.jsx',
-      '.js'
-    ],
-    mainFields: [
-      'browser',
-      'main:h5',
-      'module',
-      'main'
-    ]
+    extensions: [".tsx", ".ts", ".jsx", ".js"],
+    mainFields: ["browser", "main:h5", "module", "main"],
   },
   module: {
     rules: [
@@ -64,122 +62,122 @@ const config = {
         test: /\.(css|less|s[a|c]ss)(\?.*)?$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader
-          }
-        ]
+            loader: MiniCssExtractPlugin.loader,
+          },
+        ],
       },
       {
         test: /\.css$/,
         use: [
           {
-            loader: 'css-loader',
+            loader: "css-loader",
           },
           {
-            loader: 'postcss-loader',
-          }
-        ]
+            loader: "postcss-loader",
+          },
+        ],
       },
       {
         test: /\.less$/,
         use: [
           {
-            loader: 'css-loader',
+            loader: "css-loader",
           },
           {
-            loader: 'postcss-loader',
+            loader: "postcss-loader",
           },
           {
-            loader: 'less-loader',
-          }
-        ]
+            loader: "less-loader",
+          },
+        ],
       },
       {
         test: /\.[tj]sx?$/i,
         exclude: /node_modules/,
         use: [
           {
-            loader: 'babel-loader',
-            options: {}
-          }
-        ]
+            loader: "babel-loader",
+            options: {},
+          },
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|bpm|svg|webp)(\?.*)?$/,
-        type: 'asset',
+        type: "asset",
         parser: {
           dataUrlCondition: {
-            maxSize: 10240
-          }
+            maxSize: 10240,
+          },
         },
         generator: {
-          filename: 'image/[name].[hash][ext]'
-        }
+          filename: "image/[name].[hash][ext]",
+        },
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        type: 'asset',
+        type: "asset",
         parser: {
           dataUrlCondition: {
-            maxSize: 10240
-          }
+            maxSize: 10240,
+          },
         },
         generator: {
-          filename: 'static/fonts/[name].[hash][ext]'
-        }
+          filename: "static/fonts/[name].[hash][ext]",
+        },
       },
       {
         test: /\.(mp4|webm|ogg|mp3|m4a|wav|flac|aac)(\?.*)?$/,
-        type: 'asset',
+        type: "asset",
         parser: {
           dataUrlCondition: {
-            maxSize: 10240
-          }
+            maxSize: 10240,
+          },
         },
         generator: {
-          filename: 'static/media/[name].[hash][ext]'
-        }
+          filename: "static/media/[name].[hash][ext]",
+        },
       },
       {
         resourceQuery: /raw/,
-        type: 'asset/source'
-      }
-    ]
+        type: "asset/source",
+      },
+    ],
   },
   optimization: {
     minimize: true,
     splitChunks: {
-      chunks: 'all',
+      chunks: "all",
       minSize: 819200,
       minChunks: 1,
       maxSize: 1843200,
       maxAsyncRequests: 30,
       maxInitialRequests: 30,
-      automaticNameDelimiter: '~',
+      automaticNameDelimiter: "~",
       cacheGroups: {
-        'default': false,
+        default: false,
         vendors: {
           test: /[\\\/]node_modules[\\\/]/,
           priority: -10,
           reuseExistingChunk: true,
-          name: 'vendors'
+          name: "vendors",
         },
         common: {
           minChunks: 2,
           priority: -20,
           reuseExistingChunk: true,
-          name: 'common'
+          name: "common",
         },
         react: {
           test: /[\\\/]node_modules[\\\/](core-js|react.*|redux.*|props-type|immer|history|@reduxjs\/toolkit)[\\\/]/,
           priority: 0,
           reuseExistingChunk: true,
-          name: 'react',
-          minSize: 0
-        }
-      }
+          name: "react",
+          minSize: 0,
+        },
+      },
     },
     runtimeChunk: {
-      name: 'runtime'
+      name: "runtime",
     },
     emitOnErrors: true,
     minimizer: [
@@ -190,51 +188,55 @@ const config = {
         },
       }),
       new CssMinimizerPlugin({}),
-    ]
+    ],
   },
   plugins: [
+    new ConsoleLogOnBuildWebpackPlugin(),
     new FriendlyErrorsWebpackPlugin(),
-    new ProgressPlugin(
-      {
-        percentBy: 'entries',
-        profile: !!process.env.PROFILE
-      }
-    ),
-    new HtmlWebpackPlugin(
-      {
-        filename: 'index.html',
-        template: path.join(__dirname, '../public/index.html'),
-        minify: {
-          collapseWhitespace: true,
-          minifyJS: true,
-          html5: true,
-          minifyCSS: true,
-          removeComments: true,
-          removeTagWhitespace: false
-        },
-      }
-    ),
+    new ProgressPlugin({
+      percentBy: "entries",
+      profile: !!process.env.PROFILE,
+    }),
+    new HtmlWebpackPlugin({
+      filename: "index.html",
+      template: path.join(__dirname, "../public/index.html"),
+      minify: {
+        collapseWhitespace: true,
+        minifyJS: true,
+        html5: true,
+        minifyCSS: true,
+        removeComments: true,
+        removeTagWhitespace: false,
+      },
+    }),
+    new ReplaceTextPlugin({
+      search: /Hello/g,
+      replace: "Hi",
+    }),
+    new FileListPlugin(),
+    new CopyWebpackPlugin([{ from: "src/assets", to: "assets" }]),
+    new ZipWebpackPlugin({
+      filename: "webList.zip",
+    }),
   ],
   entry: {
-    app: path.join(__dirname, '../src/app')
+    app: path.join(__dirname, "../src/app"),
   },
-}
+};
 
 if (process.env.ANALYZER) {
-  config.plugins.push(new BundleAnalyzerPlugin())
+  config.plugins.push(new BundleAnalyzerPlugin());
 }
 
-
-const lastCofig = process.env.SPEED_MEASURE ? smp.wrap(config) : config
+const lastCofig = process.env.SPEED_MEASURE ? smp.wrap(config) : config;
 
 // MiniCssExtractPlugin不能与SpeedMeasurePlugin一起使用，不然会抛错
-config.plugins.push(new MiniCssExtractPlugin(
-  {
-    filename: 'css/[name].[contenthash].css',
-    chunkFilename: 'css/[name].[contenthash].css',
-    experimentalUseImportModule: false
-  }
-))
+config.plugins.push(
+  new MiniCssExtractPlugin({
+    filename: "css/[name].[contenthash].css",
+    chunkFilename: "css/[name].[contenthash].css",
+    experimentalUseImportModule: false,
+  })
+);
 
-
-module.exports = lastCofig
+module.exports = lastCofig;

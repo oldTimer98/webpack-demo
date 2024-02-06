@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
 function My(): JSX.Element {
-  return <div>My</div>;
+  return <div>Hello</div>;
 }
 
 export default My;
