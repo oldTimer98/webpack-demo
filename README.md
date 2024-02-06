@@ -1,6 +1,17 @@
 ## 简介（Introduction)
 
-webpack插件使用demo
+webpack插件使用demo，其中包含许多插件练习
+
+ConsoleLogOnBuildWebpackPlugin：这个插件在每次构建开始时在控制台打印一条消息。
+
+ReplaceTextPlugin：这个插件会替换源代码中的特定文本，你可以通过参数指定要替换的文本和替换内容。
+
+FileListPlugin：这个插件在每次构建完成后，会在输出目录中生成一个 filelist.md 文件，其中列出了所有的输出文件。
+
+
+CopyWebpackPlugin：这个插件用于将单个文件或整个目录复制到构建目录。
+
+ZipWebpackPlugin：这个插件用于将输出文件打包为一个 zip 文件。
 
 ## 技术栈（Scheme）
 
@@ -58,13 +69,13 @@ react + typescript + webpack5
 ## 使用（Usage）
 
 ### 克隆仓库
- 
-git clone git@github.com:willson-wang/webpack-plugin-demo.git
- 
+
+git clone git@github.com:oldTimer98/webpack-demo.git
+
 ### 安装依赖
- 
+
 pnpm install
- 
+
 ### 构建模式
 
 正常构建
